@@ -38,7 +38,6 @@ class _CachedImageWidgetState extends State<CachedImageWidget> {
         : Image.network(
             widget.imageUrl,
             loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress == null) return child;
               return Center(child: CircularProgressIndicator());
             },
             errorBuilder: (context, error, stackTrace) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:news_app/constants/size.dart';
 import 'package:news_app/constants/ui.dart';
 import 'package:news_app/logic/cubits/theme.dart';
 
@@ -18,7 +19,7 @@ class SettingsScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Select Theme"),
+                Text("Select Theme", style: TextStyle(fontSize: largeText)),
                 BlocBuilder<ThemeCubit, ThemeMode>(
                   builder: (context, state) {
                     return SegmentedButton(
@@ -39,6 +40,7 @@ class SettingsScreen extends StatelessWidget {
                           p0.first,
                         );
                       },
+                      showSelectedIcon: false,
                     );
                   },
                 ),

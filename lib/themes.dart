@@ -22,17 +22,9 @@ ThemeData _lightTheme(BuildContext context) {
     ),
     useMaterial3: true,
     scaffoldBackgroundColor: Colors.white,
-    inputDecorationTheme: const InputDecorationTheme(
+    inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: Color(0xFFF5F5F5),
-      border: OutlineInputBorder(
-        borderSide: BorderSide(color: Color(0xFF1A73E8)),
-        borderRadius: BorderRadius.all(Radius.circular(50.0)),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Color(0xFFD32F2F)),
-        borderRadius: BorderRadius.all(Radius.circular(50.0)),
-      ),
+      border: OutlineInputBorder(borderSide: BorderSide.none),
       contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     ),
     appBarTheme: const AppBarTheme(
@@ -46,13 +38,8 @@ ThemeData _lightTheme(BuildContext context) {
       ),
       iconTheme: IconThemeData(color: Color(0xFF202124)),
     ),
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: Theme.of(context).colorScheme.secondary,
-      foregroundColor: Colors.white,
-      elevation: 4,
-    ),
     cardTheme: CardTheme(
-      elevation: 2,
+      elevation: 1,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
@@ -83,15 +70,7 @@ ThemeData _darkTheme(BuildContext context) {
     scaffoldBackgroundColor: const Color(0xFF202124),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: const Color(0xFF303134),
-      border: const OutlineInputBorder(
-        borderSide: BorderSide(color: Color(0xFF8AB4F8)),
-        borderRadius: BorderRadius.all(Radius.circular(50.0)),
-      ),
-      errorBorder: const OutlineInputBorder(
-        borderSide: BorderSide(color: Color(0xFFEF9A9A)),
-        borderRadius: BorderRadius.all(Radius.circular(50.0)),
-      ),
+      border: const OutlineInputBorder(borderSide: BorderSide.none),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     ),
     appBarTheme: const AppBarTheme(
@@ -105,13 +84,8 @@ ThemeData _darkTheme(BuildContext context) {
       ),
       iconTheme: IconThemeData(color: Colors.white),
     ),
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: ThemeData.dark().colorScheme.secondary,
-      foregroundColor: Colors.white,
-      elevation: 4,
-    ),
     cardTheme: CardTheme(
-      elevation: 2,
+      elevation: 1,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),

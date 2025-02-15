@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
-import 'package:logging/logging.dart';
+import 'package:logger/logger.dart';
 import 'package:news_app/core/network/connectivity.dart';
 import 'package:news_app/core/notifications/toast.dart';
 
 class CustomDio {
   final Dio _dio;
 
-  final _logger = Logger('CustomDio');
+  final _logger = Logger();
 
   CustomDio([BaseOptions? options]) : _dio = Dio(options) {
     _dio.interceptors.add(InterceptorsWrapper(
@@ -21,20 +21,20 @@ class CustomDio {
           );
         }
 
-        _logger.info(
+        _logger.i(
             '${options.method} - ${options.path} ${options.queryParameters.isEmpty ? '' : '- ${options.queryParameters}'}');
         if (options.method == 'POST' || options.method == 'PUT') {
           if (options.data is FormData) {
-            _logger.info(options.data.fields);
+            _logger.i(options.data.fields);
           } else {
-            _logger.info(options.data);
+            _logger.i(options.data);
           }
         }
 
         return handler.next(options);
       },
       onResponse: (Response response, ResponseInterceptorHandler handler) {
-        _logger.info('${response.statusCode} - ${response.data}');
+        _logger.i('${response.statusCode} - ${response.data}');
         return handler.next(response);
       },
       onError: (DioException error, ErrorInterceptorHandler handler) {
@@ -47,20 +47,20 @@ class CustomDio {
   void _handleError(DioException error) {
     if (error.response != null && error.response!.statusCode != null) {
       if (error.response!.statusCode! >= 500) {
-        _logger.warning('Server error');
+        _logger.w('Server error');
         ShowToast.error('Server error occurred');
       } else {
-        _logger.warning(error.response?.statusCode);
-        _logger.warning(error.response?.data);
+        _logger.w(error.response?.statusCode);
+        _logger.w(error.response?.data);
         ShowToast.error('An error occurred. Please try again');
       }
     } else {
       if (error.type == DioExceptionType.connectionTimeout ||
           error.type == DioExceptionType.receiveTimeout ||
           error.type == DioExceptionType.sendTimeout) {
-        _logger.warning("Slow internet connection. Try again later");
+        _logger.w("Slow internet connection. Try again later");
       } else {
-        _logger.warning("Unexpected error: ${error.message}");
+        _logger.w("Unexpected error: ${error.message}");
         ShowToast.error('Unexpected error occurred');
       }
     }

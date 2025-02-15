@@ -3,8 +3,7 @@ import 'package:news_app/routes.dart';
 
 const List<String> routes = [Routes.home, Routes.search, Routes.settings];
 
-const EdgeInsets pagePadding =
-    EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0);
+const EdgeInsets pagePadding = EdgeInsets.only(top: 10, left: 16, right: 16);
 
 const List<String> newsTopics = [
   'Business',

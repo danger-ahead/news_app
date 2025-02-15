@@ -49,4 +49,28 @@ class HiveStorageService {
   Future<void> saveThemeMode(ThemeMode theme) async {
     await _box.put(themeMode, theme.toString().split('.').last);
   }
+
+  Future<void> savePreviousSearches(String searchKeyword) async {
+    final searches = _box.get('previousSearches', defaultValue: <String>[]);
+
+    // dont save if the search is empty or already exists
+    if (searches.isEmpty || searches.contains(searchKeyword)) {
+      return;
+    }
+
+    searches.add(searchKeyword);
+
+    // save only the last 5 searches
+    if (searches.length > 5) {
+      searches.removeAt(0);
+    }
+
+    await _box.put('previousSearches', searches);
+  }
+
+  List<String> getPreviousSearches() {
+    final res = _box.get('previousSearches', defaultValue: []);
+
+    return res.cast<String>();
+  }
 }

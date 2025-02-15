@@ -17,6 +17,7 @@ class ApiService {
   }) async {
     final response = await _dio.get(
         'https://newsapi.org/v2/everything?apiKey=$newsApiKey&q=$topic&sortBy=publishedAt&pageSize=20&page=$page');
+
     return response.data;
   }
 }

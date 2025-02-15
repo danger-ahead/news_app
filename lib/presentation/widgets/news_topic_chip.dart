@@ -15,11 +15,17 @@ class NewsTopicChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ActionChip(
-      label: Text(text),
-      onPressed: onPressed,
-      backgroundColor: activeBackgroundColor,
-      labelStyle: TextStyle(color: activeForegroundColor),
+    return InkWell(
+      onTap: onPressed,
+      splashColor: Colors.transparent,
+      overlayColor: WidgetStateProperty.all(Colors.transparent),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+            color: activeBackgroundColor,
+            borderRadius: BorderRadius.circular(24)),
+        child: Text(text, style: TextStyle(color: activeForegroundColor)),
+      ),
     );
   }
 }
