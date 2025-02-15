@@ -1,0 +1,52 @@
+import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:news_app/constants/strings.dart';
+
+class HiveStorageService {
+  late final Box _box;
+
+  HiveStorageService._();
+
+  static final HiveStorageService _instance = HiveStorageService._();
+
+  factory HiveStorageService() => _instance;
+
+  static Future<HiveStorageService> init() async {
+    await Hive.initFlutter();
+    // Hive.registerAdapter(UserModelAdapter());
+    _instance._box = await Hive.openBox('app_data');
+    return _instance;
+  }
+
+  Future<void> saveData(String key, dynamic data) async {
+    await _box.put(key, data);
+  }
+
+  dynamic getData(String key) {
+    return _box.get(key);
+  }
+
+  Future<void> deleteData(String key) async {
+    await _box.delete(key);
+  }
+
+  Future<void> clearData() async {
+    await _box.clear();
+  }
+
+  ThemeMode getThemeMode() {
+    final theme = _box.get(themeMode);
+
+    if (theme == null || theme == 'system') {
+      return ThemeMode.system;
+    } else if (theme == 'light') {
+      return ThemeMode.light;
+    } else {
+      return ThemeMode.dark;
+    }
+  }
+
+  Future<void> saveThemeMode(ThemeMode theme) async {
+    await _box.put(themeMode, theme.toString().split('.').last);
+  }
+}
