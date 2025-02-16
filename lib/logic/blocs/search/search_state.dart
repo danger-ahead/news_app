@@ -12,7 +12,11 @@ class SearchState {
   final List<String> previousSearches;
   final bool isSearching;
   final String searchQuery;
+
+  /// news topic search results stored by search query
   final Map<String, NewsTopic> news;
+
+  /// current search results being shown in the UI
   final NewsTopic? currentResults;
 
   SearchState copyWith({

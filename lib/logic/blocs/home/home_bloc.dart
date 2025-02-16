@@ -14,24 +14,29 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     // Fetch initial news
     on<FetchNews>((event, emit) async {
       if (state.news[event.index] == null) {
-        emit(state.copyWith(isLoading: true));
+        /// storing the initial index to revert back to it if the fetching fails
+        final initialIndex = state.index;
 
-        final res = await _apiService.fetchNews(
-          newsTopics[event.index],
-          page: 1,
-        );
+        emit(state.copyWith(isLoading: true, index: event.index));
 
-        final newsTopic = NewsTopic.fromJson(res);
+        try {
+          final res = await _apiService.fetchNews(
+            newsTopics[event.index],
+            page: 1,
+          );
 
-        emit(state.copyWith(
-          isLoading: false,
-          news: {
-            ...state.news,
-            event.index: newsTopic,
-          },
-          index: event.index,
-          totalArticles: newsTopic.totalResults,
-        ));
+          final newsTopic = NewsTopic.fromJson(res);
+
+          emit(state.copyWith(
+            isLoading: false,
+            news: {
+              ...state.news,
+              event.index: newsTopic,
+            },
+          ));
+        } catch (e) {
+          emit(state.copyWith(isLoading: false, index: initialIndex));
+        }
       } else {
         emit(state.copyWith(index: event.index));
       }
@@ -43,7 +48,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
       // Check if we have reached the max number of articles
       if (currentState.news[event.index]!.articles.length >=
-          currentState.totalArticles) {
+          currentState.news[event.index]!.totalResults) {
         return; // Stop fetching
       }
 
@@ -58,8 +63,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         final newsTopic = NewsTopic.fromJson(res);
 
         final updatedNews = Map<int, NewsTopic>.from(currentState.news);
-        // updatedNews[event.index] =
-        //     currentState.news[event.index]!.copyWith(articles: updatedArticles);
 
         for (final i in newsTopic.articles) {
           updatedNews[event.index]!.articles.add(i);
@@ -69,7 +72,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           news: updatedNews,
           pageNumber: event.pageNumber,
           isLoadingMore: false,
-          totalArticles: newsTopic.totalResults,
         ));
       } catch (e) {
         emit(currentState.copyWith(isLoadingMore: false));

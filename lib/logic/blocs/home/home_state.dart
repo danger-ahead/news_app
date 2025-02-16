@@ -7,15 +7,22 @@ class HomeState {
     this.news = const {},
     this.pageNumber = 1,
     this.isLoadingMore = false,
-    this.totalArticles = 0,
   });
 
+  /// initial loading state
   final bool isLoading;
+
+  /// current news topic tab index
   final int index;
+
+  /// news topics stored by index
   final Map<int, NewsTopic> news;
+
+  /// current page number
   final int pageNumber;
+
+  /// user has scrolled to the bottom and we are fetching more news
   final bool isLoadingMore;
-  final int totalArticles;
 
   HomeState copyWith({
     bool? isLoading,
@@ -23,7 +30,6 @@ class HomeState {
     Map<int, NewsTopic>? news,
     int? pageNumber,
     bool? isLoadingMore,
-    int? totalArticles,
   }) {
     return HomeState(
       isLoading: isLoading ?? this.isLoading,
@@ -31,7 +37,6 @@ class HomeState {
       news: news ?? this.news,
       pageNumber: pageNumber ?? this.pageNumber,
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
-      totalArticles: totalArticles ?? this.totalArticles,
     );
   }
 }

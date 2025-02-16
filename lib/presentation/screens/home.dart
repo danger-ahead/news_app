@@ -33,14 +33,16 @@ class _HomeScreenState extends State<HomeScreen> {
   bool get _isFetchingMore {
     final state = context.read<HomeBloc>().state;
     return state.isLoadingMore ||
-        (state.news[state.index]!.articles.length >= state.totalArticles);
+        (state.news[state.index]!.articles.length >=
+            state.news[state.index]!.totalResults);
   }
 
   void _fetchMoreNews() {
     final bloc = context.read<HomeBloc>();
     final state = bloc.state;
 
-    if (state.news[state.index]!.articles.length >= state.totalArticles) {
+    if (state.news[state.index]!.articles.length >=
+        state.news[state.index]!.totalResults) {
       return;
     }
 
@@ -117,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     } else {
                       // Show loading indicator at the end of the list
                       return state.news[state.index]!.articles.length <
-                              state.totalArticles
+                              state.news[state.index]!.totalResults
                           ? Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               child: const Center(
