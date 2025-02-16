@@ -34,7 +34,7 @@ class CustomDio {
         return handler.next(options);
       },
       onResponse: (Response response, ResponseInterceptorHandler handler) {
-        _logger.i('${response.statusCode} - ${response.data}');
+        _logger.i(response.statusCode);
         return handler.next(response);
       },
       onError: (DioException error, ErrorInterceptorHandler handler) {

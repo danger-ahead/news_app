@@ -41,6 +41,7 @@ class _NewsCardState extends State<NewsCard>
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                spacing: 10,
                 children: [
                   Container(
                       decoration: BoxDecoration(
@@ -52,16 +53,21 @@ class _NewsCardState extends State<NewsCard>
                       child: Text((widget.index + 1).toString(),
                           style: TextStyle(
                               color: Theme.of(context).colorScheme.primary))),
-                  Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primaryContainer,
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 5),
-                      child: Text(widget.article.source.name,
-                          style: TextStyle(
-                              color: Theme.of(context).colorScheme.primary))),
+                  Expanded(
+                    child: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primaryContainer,
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                        child: Text(widget.article.source.name,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary))),
+                  ),
                 ],
               ),
               if (widget.article.urlToImage != null)

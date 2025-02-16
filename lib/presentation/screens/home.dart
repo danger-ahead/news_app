@@ -118,7 +118,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       // Show loading indicator at the end of the list
                       return state.news[state.index]!.articles.length <
                               state.totalArticles
-                          ? const Center(child: CircularProgressIndicator())
+                          ? Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: const Center(
+                                  child: CircularProgressIndicator()),
+                            )
                           : const SizedBox.shrink();
                     }
                   },

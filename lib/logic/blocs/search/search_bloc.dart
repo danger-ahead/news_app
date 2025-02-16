@@ -15,7 +15,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   SearchBloc() : super(const SearchState()) {
     on<FetchPreviousSearches>((event, emit) async {
       emit(state.copyWith(
-          previousSearches: HiveStorageService().getPreviousSearches()));
+          previousSearches: HiveStorageService().getPreviousSearchKeywords()));
     });
 
     on<PerformSearch>((event, emit) async {
@@ -24,9 +24,21 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       if (event.query.isEmpty) {
         ShowToast.error("Search query cannot be empty");
         return;
-      } else if (state.news[event.query] != null) {
+      }
+
+      /// Check if the search query is already cached in memory
+      else if (state.news[event.query] != null) {
         emit(state.copyWith(
             currentResults: state.news[event.query], isSearching: false));
+        return;
+      }
+
+      /// Check if the search query is already cached in Hive
+      /// persisted across app restarts
+      else if (HiveStorageService().getSearchResults(event.query) != null) {
+        emit(state.copyWith(
+            currentResults: HiveStorageService().getSearchResults(event.query),
+            isSearching: false));
         return;
       }
 
@@ -34,11 +46,15 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         final searchResults =
             NewsTopic.fromJson(await _apiService.fetchNews(event.query));
 
-        await HiveStorageService().savePreviousSearches(event.query);
+        await HiveStorageService().savePreviousSearchKeywords(event.query);
+
+        /// Cache the search results in Hive
+        /// don't need to await this operation
+        HiveStorageService().storeSearchResults(event.query, searchResults);
 
         emit(state.copyWith(
             isSearching: false,
-            previousSearches: HiveStorageService().getPreviousSearches(),
+            previousSearches: HiveStorageService().getPreviousSearchKeywords(),
             currentResults: searchResults,
             // cache the search results
             news: {...state.news, event.query: searchResults}));
@@ -55,7 +71,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
           currentResults: null,
           isSearching: false,
           searchQuery: '',
-          previousSearches: HiveStorageService().getPreviousSearches()));
+          previousSearches: HiveStorageService().getPreviousSearchKeywords()));
     });
   }
 }
