@@ -52,7 +52,10 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
     on<ClearSearch>((event, emit) async {
       emit(state.copyWith(
-          currentResults: null, isSearching: false, searchQuery: ''));
+          currentResults: null,
+          isSearching: false,
+          searchQuery: '',
+          previousSearches: HiveStorageService().getPreviousSearches()));
     });
   }
 }

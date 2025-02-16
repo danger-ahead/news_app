@@ -51,10 +51,10 @@ class HiveStorageService {
   }
 
   Future<void> savePreviousSearches(String searchKeyword) async {
-    final searches = _box.get('previousSearches', defaultValue: <String>[]);
+    var searches = _box.get('previousSearches', defaultValue: <String>[]);
 
-    // dont save if the search is empty or already exists
-    if (searches.isEmpty || searches.contains(searchKeyword)) {
+    // dont save if the search keyword already exists
+    if (searches.contains(searchKeyword)) {
       return;
     }
 
@@ -64,6 +64,9 @@ class HiveStorageService {
     if (searches.length > 5) {
       searches.removeAt(0);
     }
+
+    // reverse the list so that the latest search is at the top
+    searches = searches.reversed.toList();
 
     await _box.put('previousSearches', searches);
   }

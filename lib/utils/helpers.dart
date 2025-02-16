@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:news_app/core/network/custom_dio.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 Future<File?> cacheImage(String url) async {
   final logger = Logger();
@@ -31,4 +32,10 @@ Future<File?> cacheImage(String url) async {
   }
 
   return null;
+}
+
+Future<void> openNews(String url) async {
+  if (await canLaunchUrlString(url)) {
+    await launchUrlString(url, mode: LaunchMode.inAppBrowserView);
+  }
 }

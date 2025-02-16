@@ -9,3 +9,10 @@ class FetchNews extends HomeEvent {
 
   final int index;
 }
+
+class FetchMoreNews extends HomeEvent {
+  const FetchMoreNews({required this.index, required this.pageNumber});
+
+  final int index;
+  final int pageNumber;
+}
